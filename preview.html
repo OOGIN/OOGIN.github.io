@@ -1,0 +1,141 @@
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>올해 진행률</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #111827;
+            color: #ffffff;
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            text-align: center;
+        }
+
+        .title {
+            font-size: 22px;
+            color: #9ca3af;
+            margin-bottom: 30px;
+        }
+
+        .progress-circle {
+            width: 240px;
+            height: 240px;
+            border-radius: 50%;
+            background: conic-gradient(
+                #38bdf8 0%,
+                #38bdf8 var(--progress),
+                #374151 var(--progress),
+                #374151 100%
+            );
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: auto;
+        }
+
+        .inner {
+            width: 210px;
+            height: 210px;
+            border-radius: 50%;
+            background: #111827;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .percentage {
+            font-size: 48px;
+            font-weight: bold;
+            color: #38bdf8;
+        }
+
+        .label {
+            font-size: 14px;
+            color: #9ca3af;
+            margin-top: 8px;
+        }
+
+        .date {
+            margin-top: 30px;
+            font-size: 16px;
+            color: #d1d5db;
+        }
+
+        .remaining {
+            margin-top: 10px;
+            font-size: 14px;
+            color: #9ca3af;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="title">2026 YEAR PROGRESS</div>
+
+        <div class="progress-circle" id="progressCircle">
+            <div class="inner">
+                <div class="percentage" id="percentage">0%</div>
+                <div class="label">YEAR PROGRESS</div>
+            </div>
+        </div>
+
+        <div class="date" id="currentDate"></div>
+        <div class="remaining" id="remaining"></div>
+    </div>
+
+    <script>
+        function updateProgress() {
+            const now = new Date();
+
+            const year = now.getFullYear();
+            const start = new Date(year, 0, 1);
+            const end = new Date(year + 1, 0, 1);
+
+            const total = end - start;
+            const elapsed = now - start;
+
+            const progress = (elapsed / total) * 100;
+            const remaining = 100 - progress;
+
+            document.getElementById("percentage").textContent =
+                progress.toFixed(2) + "%";
+
+            document.getElementById("progressCircle")
+                .style.setProperty("--progress", progress + "%");
+
+            document.getElementById("currentDate").textContent =
+                now.toLocaleDateString("ko-KR", {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric"
+                });
+
+            document.getElementById("remaining").textContent =
+                "올해 남은 기간 " + remaining.toFixed(2) + "%";
+        }
+
+        updateProgress();
+        setInterval(updateProgress, 1000);
+    </script>
+
+</body>
+</html>
